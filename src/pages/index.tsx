@@ -1,3 +1,5 @@
+import { connect } from 'umi';
+import { useSelector, useDispatch } from 'umi';
 import { useState } from 'react';
 import { Icon, TabBar, Cell, Button } from 'zarm';
 import * as qs from 'query-string';
@@ -9,7 +11,7 @@ const TabIcon = Icon.createFromIconfont(
   '//at.alicdn.com/t/font_2879843_r382thm1svq.js',
 );
 
-export default function IndexPage() {
+function IndexPage() {
   const [activeKey, setActiveKey] = useState('home');
   const weChatAuthorize = () => {
     const param = {
@@ -24,12 +26,24 @@ export default function IndexPage() {
     console.log('wechat link', link);
     window.location.href = link;
   };
+  const dispatch = useDispatch();
+  const count = useSelector((state) => state.testModel.count);
+
+  const handleClick = () => {
+    // 使用 dispatch 调用 testModel 中的 change 方法
+    dispatch({ type: 'testModel/change' });
+  };
 
   return (
     <div>
       <Button shadow theme="primary" onClick={() => weChatAuthorize()}>
         认证
       </Button>
+
+      <h3>{count}</h3>
+
+      <button onClick={handleClick}>Update Count</button>
+
       <TabBar activeKey={activeKey} onChange={setActiveKey}>
         <TabBar.Item
           itemKey="home"
@@ -51,3 +65,12 @@ export default function IndexPage() {
     </div>
   );
 }
+
+// // 这里的 testModel 是对应 model 的 namespace
+// function mapStateToProps({ testModel }) {
+//   return { ...testModel };
+// }
+
+// export default connect(mapStateToProps)(IndexPage);
+
+export default IndexPage;
