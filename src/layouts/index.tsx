@@ -1,5 +1,6 @@
-import React from 'react';
 import styles from './index.less';
+
+import { useDispatch } from 'umi';
 
 function getQueryString(name: String) {
   let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -11,7 +12,21 @@ function getQueryString(name: String) {
 }
 
 export default function (props: { children: any }) {
-  console.log('wechat ' + getQueryString('code'));
+  //  获取登录状态
+  const token = localStorage.getItem('Token');
+
+  if (token == null) {
+    //获取url中微信认证·
+    const wxcode = getQueryString('code');
+    if (wxcode != null) {
+      console.log('wechat ' + wxcode);
+      const dispatch = useDispatch();
+      dispatch({
+        type: 'testModel/getToken',
+        payload: { code: wxcode },
+      });
+    }
+  }
 
   return (
     <>
