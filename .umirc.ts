@@ -4,17 +4,16 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+
   routes: [
+    { path: '/login', exact: true, component: '@/pages/login/index' },
     {
       exact: false,
       path: '/',
       component: '@/layouts/index',
-      routes: [
-        { exact: true, path: '/', component: '@/pages/index' },
-        // { exact: true, path: '/users', component: '@/pages/users' },
-      ],
+      wrappers: ['@/wrappers/auth'],
+      routes: [{ exact: true, path: '/', component: '@/pages/index' }],
     },
-    // { path: '/', component: '@/pages/index' },
   ],
   fastRefresh: {},
   dva: {

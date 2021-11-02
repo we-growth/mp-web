@@ -9,7 +9,7 @@ export default async function getToken(
     code?: string;
   },
   options?: { [key: string]: any },
-) {
+): Promise<any> {
   console.log('fetch token', wxcode);
   return request<API.Token>('http://127.0.0.1:8000/as/login/mp', {
     method: 'POST',
